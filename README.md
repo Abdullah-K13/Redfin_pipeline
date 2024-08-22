@@ -30,6 +30,8 @@ This project is a comprehensive data engineering solution designed to fetch, pro
 4. **Data Visualization**:
    - Power BI connects to Snowflake to visualize the processed data for analysis and reporting.
 
+## Project Architecture Diagram
+![Untitled Diagram drawio (1)](https://github.com/user-attachments/assets/bb8de138-7431-4063-9e37-203bf000b33d)
 
 ## Setup and Installation
 
