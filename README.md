@@ -39,4 +39,9 @@ This project is a comprehensive data engineering solution designed to fetch, pro
    ```bash
    git clone https://github.com/yourusername/redfin-data-pipeline.git
    cd redfin-data-pipeline
-
+2. **Install all dependencies from requirements.txt**
+3. **Pre requirements**
+   Make sure you have linux platform to run apache airflow
+   - you can either use dockers to run airflow webserver.
+   - or a virtual machine with linux os installed.
+   - or you can use ec2 instance of aws.
