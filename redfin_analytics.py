@@ -179,4 +179,4 @@ with DAG('redfin_analytics_dag',
         dag=dag
         )
 
-        extract_redfin_data >> transform_redfin_data 
+        extract_redfin_data >> transform_redfin_data >> load_to_s3
