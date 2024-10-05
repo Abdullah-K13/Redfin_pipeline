@@ -9,8 +9,8 @@ from airflow.operators.bash import BashOperator
 
 
 s3_client = boto3.client('s3',
-    aws_access_key_id=[AWS EXAMPLE ACCES KEY],
-    aws_secret_access_key=[AWS EXAMPLE SCRETE KEY],
+    aws_access_key_id=[''],
+    aws_secret_access_key=[''],
     region_name='ap-southeast-2')
 
 # s3 buckets
