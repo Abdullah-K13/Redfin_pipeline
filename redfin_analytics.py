@@ -1,42 +1,37 @@
-
 from airflow import DAG
 from datetime import timedelta, datetime
 from airflow.operators.python import PythonOperator
 import pandas as pd
 import boto3
 from airflow.operators.bash import BashOperator
+# from utils.constants import AWS_ACCESS_KEY_ID, AWS_ACCESS_KEY
 # from utils.constants import AWS_REGION_NAME, AWS_BUCKET_NAME
 
-
 s3_client = boto3.client('s3',
-    aws_access_key_id=[''],
-    aws_secret_access_key=[''],
+    aws_access_key_id = '',
+    aws_secret_access_key = '',
     region_name='ap-southeast-2')
 
+#testing
+
 # s3 buckets
-target_bucket_name = 'redfintransformzoneyml'
+target_bucket_name = 'redfintransformdata'
 
 # url link from - https://www.redfin.com/news/data-center/
 url_by_city = 'https://redfin-public-data.s3.us-west-2.amazonaws.com/redfin_market_tracker/us_national_market_tracker.tsv000.gz'
 
 def extract_data(**kwargs):
     print('in the extract func')
-
-
     url = kwargs['url']
     df = pd.read_csv(url, compression='gzip', sep='\t')
-    
     now = datetime.now()
     date_now_string = now.strftime("%d%m%Y%H%M%S")
     print("suc 1")
-
     file_str = 'redfin_data_' + date_now_string
-    output_file_path = f"/opt/airflow/data/output/"+file_str
+    output_file_path = f"/home/abdullah/airflow/data/output/"+file_str
     output_list = [output_file_path, file_str]
-
     df.to_csv(f"{output_file_path}.csv", index=False)
     print("suc 2")
-
     task_instance = kwargs.get('task_instance')
     if task_instance:
         task_instance.xcom_push(key='my_key', value=output_file_path)
@@ -122,7 +117,6 @@ def transform_data(**kwargs):
     print('csv format done')
     # Upload CSV to S3
     object_key = f"{object_key}.csv"
-
     s3_client.put_object(Bucket=target_bucket_name, Key=object_key, Body=csv_data)
 
 def load_raw_Data_To_bucket(**kwargs):
@@ -137,11 +131,11 @@ def load_raw_Data_To_bucket(**kwargs):
      object_key = task_instance.xcom_pull(task_ids="tsk_extract_redfin_data")[1]
      print('in transform 2')
 
-     s3_client.put_object(Bucket='storerawdatayml', Key=object_key, Body=data)
+     s3_client.put_object(Bucket='redifinrawdata', Key=object_key, Body=data)
     
 
 default_args = {
-    'owner': 'Abdullah Khan',
+    'owner': 'rabiya asif',
     'start_date': datetime(2024, 8, 18)
 }
 
@@ -185,4 +179,4 @@ with DAG('redfin_analytics_dag',
         dag=dag
         )
 
-        extract_redfin_data >> transform_redfin_data >> load_to_s3
+        extract_redfin_data >> transform_redfin_data 
